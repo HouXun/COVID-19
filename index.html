@@ -1,0 +1,179 @@
+<!-- [twig template] use '_blocks.html.twig' -->
+
+<!DOCTYPE HTML>
+
+<html>
+<head>
+
+	<meta charset="utf-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1" />
+
+	<link href='https://fonts.googleapis.com/css?family=Raleway:400,300,700' rel='stylesheet' type='text/css'>
+	<link href="https://fonts.googleapis.com/css?family=Montserrat:400,600,800" rel="stylesheet">
+	<link rel="stylesheet" href="css/bootstrap.min.css">
+	<link rel="stylesheet" type="text/css" href="css/style.css?3" />
+	<link rel="stylesheet" type="text/css" href="css/map.css?3" />
+
+</head>
+
+<body>
+
+	
+
+	<!-- Emplacement pour le contenu principal -->
+	<div class="container">
+		<div class="row">
+			<div class="offset-md-2 col-md-8 col-sm-12">
+				<h1 class="intro">COVID-19</h1>
+				<h1 class="intro">1921384</h1>
+				<p class="credits">Author: XUN HOU, code available on<a target="_blank" href="https://github.com/gin9734/COVID-19"> GitHub</a> <a class="warn_error"></a></p>
+				<p class="lead">
+					Since COVID-19 has been spreading widely around the world and becomes a severe problem for many countries, it is meaningful to monitor the situations on a daily basis. Therefore, I plan to present a world map with different number of confirmed casees in each country. Additionally two line charts will be applied to compare the circumstances in China and outside China.
+				</p>
+
+				</div>
+			</div>
+				<div class="row">
+
+					<div class="col-lg-9 col-sm-12">
+						<div id="map" class="map">
+							<div class="tooltip"></div>
+						</div>
+					</div>
+
+					<div class="col-lg-3 col-sm-12">
+						<div class="map-details">
+							<h4></h4>
+							<p>Click / touch a circle for more information.</p>
+						</div>
+					</div>
+					<div class="col-lg-12">
+						<div class="source">
+							Sources: compilation of <a target="_blank" href="https://coronavirus.jhu.edu/map.html"> Johns-Hopkins University</a>
+							updated on March 27, and based on data from the WHO, CDC, NHC and DXY.cn
+
+						</div>
+					</div>
+				</div>
+
+				<div class="chart-background margin-top margin-bottom">
+					<div class="row four-graphs">
+
+						<div class="col-lg-6 col-md-12">
+							<h5>Infections in China</h5>
+							<div class="chart chart-china"></div>
+							<!-- <div class="source">Source: <a target="_blank" href="https://donnees.banquemondiale.org/indicateur/NY.GDP.MKTP.CD?end=2018&start=2008">Banque mondiale</a></div> -->
+						</div>
+
+						<div class="col-lg-6 col-md-12">
+							<h5>Elsewhere in the world</h5>
+							<div class="chart chart-other"></div>
+							<!-- <div class="source">Source: Ilostat via la <a target="_blank" href="https://data.worldbank.org/indicator/SL.UEM.TOTL.NE.ZS?end=2018&locations=US&start=2008">Banque Mondiale</a></div> -->
+
+						</div>
+					</div>
+				</div>
+
+				<div class="row">
+					<div class="offset-md-2 col-md-8 col-sm-12">
+
+						<p><span class="big">659367</span>confirmed infections worldwide</p>
+						<p><span class="big">30475</span> deaths</p>
+						<p><span class="big">139304</span> recovered</p>
+						<p class="lead">
+							Since 03.27.2020, The COVID-19 has caused 30438 deaths and more than 650000 confirmed infections worldwide, according to figures compiled by Johns-Hopkins University. Given line charts above, it is obvious that China has more than 73 times as confirmed cases as in other countries in January. However, COVID-19 has become a widely spread case two months later and many countries have more than 10000 confirmed cases apart from China and this trend will keep going. The limitation of my approach is that it cannot realize a real-time dashboard without using an API to JHU databases. I will try to make it in the future.
+						</p>
+						<p class="lead">
+							In conclusion, I manage to achieve a static dashboard showing worldwide situation of COVID-19 as well as two line charts illustrating a comparison between China and other countries. To improve the website, I will try to learn how to use API to achieve a real-time dashboard.
+						</p>
+
+						<p class="lead">
+							Literature resources:<br>
+							D3 Tutorials on<a target="_blank" href="https://keats.kcl.ac.uk/course/view.php?id=67078"> KEATS 7CCSMSDV.</a> <a class="warn_error"></a><br>
+							2019-nCoV Data Repository by <a target="_blank" href="https://github.com/CSSEGISandData/COVID-19"> Johns Hopkins CSSE.</a> <a class="warn_error"><br>
+							<a target="_blank" href="https://labs.letemps.ch/interactive/2020/carte-coronavirus-monde/"> LETEMPS. </a> <a class="warn_error"></a><br>
+						</p>
+						<!-- <p class="credits">Infographie: Paul Ronga + TODO code dipso sur github</p> -->
+
+
+					</div>
+				</div>
+
+		</div>
+
+		
+
+
+		<script src="lib/jquery-3.4.1.slim.min.js"></script>
+		<!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script> -->
+		<script src="lib/bootstrap.min.js"></script>
+
+		<!-- pies -->
+		<script src="lib/d3.v4.min.js"></script>
+		<script src="lib/topojson.v2.min.js"></script>
+		<script src="lib/d3-geo-projection.v2.min.js"></script>
+		<script src="lib/d3-tip.js"></script>
+		<script src="lib/queue.min.js"></script>
+		<script src="js/chart-custom.js?12"></script>
+		<script src="js/map.js?10"></script>
+		<script>
+
+		$(document).ready(function() {
+			// time-serie charts
+			d3.csv("data/linegraphs.csv?4", function(e, data){
+				var china = [];
+				var other = [];
+
+				data.forEach(function(d) {
+					d.date = new Date(d.timestamp);
+					china.push([d.date, +d.China]);
+					other.push([d.date, +d.Other]);
+				});
+
+				const chartChina = new Chart({
+					element: document.querySelector('.chart-china'),
+					data: china,
+					suffix: ' case',
+					ylabel: 'Confirmed',
+					dateParse: "%Y-%m-%d",
+					dateFormat: "%d.%m."
+				});
+
+				const chartOther = new Chart({
+					element: document.querySelector('.chart-other'),
+					data: other,
+					suffix: ' case',
+					ylabel: 'Confirmed',
+					dateParse: "%Y-%m-%d",
+					dateFormat: "%d.%m.",
+				});
+
+				var resizeTimeout;
+				function resizeEvent(){
+					clearTimeout(resizeTimeout);
+					resizeTimeout = setTimeout(function(){
+						chartChina.draw();
+						chartOther.draw();
+					}, 200);
+				}
+				d3.select(window).on('resize', resizeEvent );
+
+			});
+
+			if (window.fetch) {
+				fetch('meta.json')
+					.then(function(response) { return response.json(); })
+					.then(function(data) {
+						console.log(data);
+						$('.warn_error').text('Signaler une erreur');
+						$('<span>| </span>').insertBefore('.warn_error')
+						$('.warn_error').attr('href', 'mailto:' + data['contact'] + '@letemps.ch');
+					});
+				}
+		});
+
+		</script>
+
+
+	</body>
+	</html>
