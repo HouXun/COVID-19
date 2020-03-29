@@ -1,4 +1,5 @@
 # COVID-19
+Author: XUN HOU<br>
 A static dashboard showing worldwide situation of COVID-19 as well as two line charts illustrating a comparison between China and other countries.<br>
 Literature resources:<br>
 							D3 Tutorials on<a target="_blank" href="https://keats.kcl.ac.uk/course/view.php?id=67078"> KEATS 7CCSMSDV.</a> <a class="warn_error"></a><br>
