@@ -3,7 +3,7 @@ Author: XUN HOU<br>
 ====
 
 View an  example here: 
-![](https://github.com/guodongxiaren/ImageCache/raw/master/example.png)  
+![](https://github.com/HouXun/COVID-19/raw/master/example.png)  
 ----
 A static dashboard showing worldwide situation of COVID-19 as well as two line charts comparing confirmed cases between China and other countries.<br>
 # Literature resources:<br>
